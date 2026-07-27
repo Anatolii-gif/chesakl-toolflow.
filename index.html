@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>CHESAKL ToolFlow</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>CHESAKL ToolFlow</h1>
+      <p>Быстрая выдача и возврат инструмента</p>
+    </div>
+    <div class="brand-corner">CHESAKL</div>
+  </header>
+
+  <main>
+    <section id="scan" class="page active">
+      <div class="status-card" id="statusCard">
+        <div class="status-icon" id="statusIcon">1</div>
+        <div>
+          <h2 id="statusTitle">Приложите карту сотрудника</h2>
+          <p id="statusText">После карты приложите метку инструмента</p>
+        </div>
+      </div>
+
+      <button id="scanBtn" class="primary big">Запустить сканирование NFC</button>
+      <button id="cancelBtn" class="secondary hidden">Закрыть список</button>
+
+      <div id="sessionPanel" class="session-panel hidden">
+        <div class="session-head">
+          <div>
+            <span class="session-label">Открытый список</span>
+            <strong id="sessionWorkerName">—</strong>
+          </div>
+          <span id="sessionCount" class="session-count">0</span>
+        </div>
+        <div id="sessionList" class="session-list"></div>
+        <p class="session-hint">Сканируйте инструменты один за другим. Для завершения снова приложите метку сотрудника.</p>
+      </div>
+
+      <div class="quick-grid">
+        <button data-action="manual-worker" class="tile">Сотрудник вручную</button>
+        <button data-action="manual-tool" class="tile">Инструмент вручную</button>
+      </div>
+
+      <div id="currentWorker" class="current hidden"></div>
+      <div id="lastResult" class="result hidden"></div>
+    </section>
+
+    <section id="search" class="page">
+      <div class="section-head">
+        <h2>Поиск инструмента</h2>
+        <input id="searchInput" type="search" placeholder="Название или номер">
+      </div>
+      <div id="toolList" class="list"></div>
+    </section>
+
+    <section id="history" class="page">
+      <div class="section-head">
+        <h2>История</h2>
+        <button id="exportBtn" class="ghost">Экспорт CSV</button>
+      </div>
+      <div id="historyList" class="list"></div>
+    </section>
+
+    <section id="settings" class="page">
+      <h2>Настройки</h2>
+
+      <details open>
+        <summary>Сотрудники</summary>
+        <form id="workerForm" class="form-row">
+          <input id="workerName" required placeholder="Имя сотрудника">
+          <input id="workerTag" required placeholder="Код NFC, например EMP-001">
+          <button class="primary">Добавить</button>
+        </form>
+        <div id="workerList" class="list compact"></div>
+      </details>
+
+      <details open>
+        <summary>Инструменты</summary>
+        <form id="toolForm" class="form-row">
+          <input id="toolName" required placeholder="Название инструмента">
+          <input id="toolTag" required placeholder="Код NFC, например TOOL-001">
+          <button class="primary">Добавить</button>
+        </form>
+        <div id="settingsToolList" class="list compact"></div>
+      </details>
+
+      <details>
+        <summary>Резервная копия</summary>
+        <div class="backup-actions">
+          <button id="backupBtn" class="secondary">Скачать JSON</button>
+          <label class="secondary file-label">Загрузить JSON<input id="restoreInput" type="file" accept="application/json"></label>
+          <button id="resetBtn" class="danger">Очистить все данные</button>
+        </div>
+      </details>
+
+      <div class="note">
+        NFC работает в Chrome на Android через HTTPS. На GitHub Pages HTTPS включён автоматически.
+        Метка должна содержать текстовый код сотрудника или инструмента.
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button data-page="scan" class="active">Выдача</button>
+    <button data-page="search">Поиск</button>
+    <button data-page="history">История</button>
+    <button data-page="settings">Настройки</button>
+  </nav>
+
+  <dialog id="pickerDialog">
+    <form method="dialog">
+      <div class="dialog-head">
+        <h3 id="pickerTitle">Выберите</h3>
+        <button value="cancel" class="icon-btn">×</button>
+      </div>
+      <div id="pickerList" class="list"></div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
